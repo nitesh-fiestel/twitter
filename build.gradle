@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example.twitter'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//    testImplementation platform('org.junit:junit-bom:5.10.0')
+//    testImplementation 'org.junit.jupiter:junit-jupiter'
+//
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    // Dropwizard Core
+    implementation 'io.dropwizard:dropwizard-core:2.0.12'
+
+    // Hibernate
+    implementation 'org.hibernate:hibernate-core:5.4.25.Final'
+
+    // MySQL JDBC Driver
+    implementation 'mysql:mysql-connector-java:8.0.25'
+
+    // Dropwizard Hibernate Bundle
+    implementation 'io.dropwizard:dropwizard-hibernate:2.0.12'
+
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,22 @@
+server:
+  applicationContextPath: /api
+  adminContextPath: /admin
+
+database:
+  driverClass: com.mysql.cj.jdbc.Driver
+  user: root
+  password: root
+  url: jdbc:mysql://localhost:3306/twitter
+  maxSize: 100                           # Maximum number of connections in the pool
+  minSize: 50
+  initialSize: 50
+  maxWaitForConnection: 1000s
+#  maxIdleTime: 600000  # 10 minutes in milliseconds
+#  poolWait: 1000
+  properties:
+    hikari.idleTimeout: 600000       # 10 minutes
+    hikari.maxLifetime: 1800000      # 30 minutes (should be longer than idleTimeout)
+    hikari.connectionTimeout: 30000  # 30 seconds
+    hikari.validationTimeout: 5000   # 5 seconds
+    hikari.maxPoolSize: 20
+
