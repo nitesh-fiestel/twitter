@@ -33,11 +33,15 @@ public class FollowerRepositoryImpl extends AbstractDAO<Follower>  implements Fo
 
     @Override
     public List<Follower> getFollowers(Long userId) {
-        try (Session session = this.currentSession()) {
-            Query query = session.createQuery("FROM Follower f where f.followingId = :followingId", Follower.class);
-            query.setParameter("followingId", userId);
-            List<Follower> followers = query.getResultList();
-            return followers;
-        }
+        return (List<Follower>) namedQuery("Follower.findFollower")
+                .setParameter("followingId", userId)
+                .getResultList();
+    }
+
+    @Override
+    public List<Follower> getFollowing(Long userId) {
+        return (List<Follower>) namedQuery("Follower.findFollowing")
+                .setParameter("followerId", userId)
+                .getResultList();
     }
 }

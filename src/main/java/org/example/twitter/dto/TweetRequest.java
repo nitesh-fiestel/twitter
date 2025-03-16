@@ -8,6 +8,5 @@ import java.util.List;
 @Data
 public class TweetRequest {
     public String content;
-    public List<String> hashTags = Lists.newArrayList();
-    public Integer userId;
+    public Long userId;
 }

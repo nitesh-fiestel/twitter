@@ -7,6 +7,7 @@ import org.example.twitter.dto.FollowRequest;
 import org.example.twitter.dto.SignupRequest;
 import org.example.twitter.dto.response.FollowerResponse;
 import org.example.twitter.models.Follower;
+import org.example.twitter.models.Tweet;
 import org.example.twitter.models.User;
 import org.example.twitter.service.UserService;
 import org.hibernate.SessionFactory;
@@ -39,11 +40,11 @@ public class UserResource {
 
         try {
             userId = userService.signup(request);
-            FollowerResponse resp = userService.getFollowers(userId);
+//            FollowerResponse resp = userService.getFollowers(userId);
         }  catch (Exception e) {
             // Return a custom error response
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("The 'param' query parameter is required.")
+                    .entity("Signup failed")
                     .build();
         }
         return Response.ok(userId).build();
@@ -51,6 +52,7 @@ public class UserResource {
 
     @POST
     @Path("/follow")
+    @UnitOfWork
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response follow(FollowRequest request) {
@@ -67,7 +69,7 @@ public class UserResource {
     }
 
     @GET
-//    @UnitOfWork
+    @UnitOfWork
     @Path("/followers")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -79,12 +81,48 @@ public class UserResource {
         }  catch (Exception e) {
             // Return a custom error response
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("The 'param' query parameter is required.")
+                    .entity("Fetching followers failed")
                     .build();
 
 
         }
-        return Response.ok(userId).build();
+        return Response.ok(response).build();
+    }
+
+    @GET
+    @UnitOfWork
+    @Path("/{userId}/tweets")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getTweets(@PathParam("userId") Long userId) {
+        List<Tweet> tweets;
+        try {
+            tweets = userService.findTweetsByUserId(userId);
+        }  catch (Exception e) {
+            // Return a custom error response
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Getting tweets failed")
+                    .build();
+        }
+        return Response.ok(tweets).build();
+    }
+
+    @GET
+    @UnitOfWork
+    @Path("/{userId}/feed")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getFeed(@PathParam("userId") Long userId) {
+        List<Tweet> tweets;
+        try {
+            tweets = userService.getFeed(userId);
+        }  catch (Exception e) {
+            // Return a custom error response
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Getting users feed failed")
+                    .build();
+        }
+        return Response.ok(tweets).build();
     }
 
 }

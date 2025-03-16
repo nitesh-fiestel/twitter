@@ -7,6 +7,7 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.example.twitter.models.Follower;
+import org.example.twitter.models.Tweet;
 import org.example.twitter.models.User;
 import org.example.twitter.repository.FollowerRepository;
 import org.example.twitter.repository.TweetRepository;
@@ -23,7 +24,7 @@ import org.hibernate.cfg.Configuration;
 
 public class MyApplication extends Application<MyConfiguration> {
 
-    private final HibernateBundle<MyConfiguration> hibernateBundle = new HibernateBundle<>(User.class, Follower.class) {
+    private final HibernateBundle<MyConfiguration> hibernateBundle = new HibernateBundle<>(User.class, Follower.class, Tweet.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(MyConfiguration configuration) {
 
@@ -53,7 +54,7 @@ public class MyApplication extends Application<MyConfiguration> {
         final UserRepository userRepository = new UserRepositoryImpl(sessionFactory);
         final TweetRepository tweetRepository = new TweetRepositoryImpl(sessionFactory);
         final FollowerRepository followerRepository = new FollowerRepositoryImpl(sessionFactory);
-        final UserService userService = new UserService(userRepository, followerRepository);
+        final UserService userService = new UserService(userRepository, followerRepository, tweetRepository);
         final TweetService tweetService = new TweetService(tweetRepository);
 
         // Register the resource

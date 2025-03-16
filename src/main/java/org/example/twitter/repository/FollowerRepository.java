@@ -9,4 +9,6 @@ public interface FollowerRepository {
     void follow(FollowRequest request);
     void unfollow(Long followerId, Long followingId);
     List<Follower> getFollowers(Long userId);
+    List<Follower> getFollowing(Long userId);
+
 }
