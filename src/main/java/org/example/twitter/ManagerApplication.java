@@ -22,34 +22,32 @@ import org.example.twitter.service.UserService;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class MyApplication extends Application<MyConfiguration> {
+public class ManagerApplication extends Application<ManagerConfiguration> {
 
-    private final HibernateBundle<MyConfiguration> hibernateBundle = new HibernateBundle<>(User.class, Follower.class, Tweet.class) {
+    private final HibernateBundle<ManagerConfiguration> hibernateBundle = new HibernateBundle<>(User.class, Follower.class, Tweet.class) {
         @Override
-        public DataSourceFactory getDataSourceFactory(MyConfiguration configuration) {
+        public DataSourceFactory getDataSourceFactory(ManagerConfiguration configuration) {
 
-            return configuration.getDatabase(); // This retrieves the database configuration from the YAML file
+            return configuration.getDatabase();
         }
 
         @Override
         public void configure(Configuration configuration) {
-            // Configure the dialect programmatically
-            configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");  // Set dialect for MySQL 8
+            configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         }
     };
 
     public static void main(String[] args) throws Exception {
-        new MyApplication().run(args);
+        new ManagerApplication().run(args);
     }
 
     @Override
-    public void initialize(Bootstrap<MyConfiguration> bootstrap) {
+    public void initialize(Bootstrap<ManagerConfiguration> bootstrap) {
         bootstrap.addBundle(hibernateBundle); // Add Hibernate Bundle to Dropwizard
     }
 
     @Override
-    public void run(MyConfiguration configuration, Environment environment) {
-        // You can get the SessionFactory instance from the HibernateBundle
+    public void run(ManagerConfiguration configuration, Environment environment) {
         final SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
         final UserRepository userRepository = new UserRepositoryImpl(sessionFactory);
         final TweetRepository tweetRepository = new TweetRepositoryImpl(sessionFactory);
@@ -57,10 +55,8 @@ public class MyApplication extends Application<MyConfiguration> {
         final UserService userService = new UserService(userRepository, followerRepository, tweetRepository);
         final TweetService tweetService = new TweetService(tweetRepository);
 
-        // Register the resource
         environment.jersey().register(new UserResource(userService));
         environment.jersey().register( new TweetResource(tweetService));
-        // Now you can use the SessionFactory to interact with the database
     }
 
 
