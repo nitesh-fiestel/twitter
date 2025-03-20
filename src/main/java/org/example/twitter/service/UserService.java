@@ -5,6 +5,7 @@ import org.example.twitter.dto.SignupRequest;
 import org.example.twitter.dto.response.FollowerResponse;
 import org.example.twitter.models.Follower;
 import org.example.twitter.models.Tweet;
+import org.example.twitter.models.User;
 import org.example.twitter.repository.FollowerRepository;
 import org.example.twitter.repository.TweetRepository;
 import org.example.twitter.repository.UserRepository;
@@ -39,6 +40,10 @@ public class UserService {
         FollowerResponse response = new FollowerResponse();
         response.setFollowers(followerRepository.getFollowers(userId));
         return response;
+    }
+
+    public User findUser(String email) {
+        return userRepository.findUser(email);
     }
 
     public List<Tweet> findTweetsByUserId(Long userId) {

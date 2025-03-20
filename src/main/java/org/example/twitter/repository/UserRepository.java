@@ -10,4 +10,5 @@ public interface UserRepository {
     List<User> findAll();
     Long signup(SignupRequest request);
     void tweet(TweetRequest request);
+    User findUser(String email);
 }

@@ -35,4 +35,11 @@ public class UserRepositoryImpl extends AbstractDAO<User> implements UserReposit
     public void tweet(TweetRequest request) {
 
     }
+
+    @Override
+    public User findUser(String email) {
+        return (User)namedQuery("User.findUser")
+                .setParameter("email", email)
+                .getSingleResult();
+    }
 }

@@ -88,6 +88,26 @@ public class UserResource {
         }
         return Response.ok(response).build();
     }
+    @GET
+    @UnitOfWork
+    @Path("/login")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response login(@QueryParam("email") String email) {
+        User response;
+        try {
+            response = userService.findUser(email);
+            int a = 1;
+        }  catch (Exception e) {
+            // Return a custom error response
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Fetching followers failed")
+                    .build();
+
+
+        }
+        return Response.ok(response).build();
+    }
 
     @GET
     @UnitOfWork
